@@ -21,7 +21,6 @@ to understand whether suburb wealth predicts restaurant success.
 **Tools:** Python · SQL · SQLite · DB Browser for SQLite
 
 ---
----
 
 ## What I Found
 
