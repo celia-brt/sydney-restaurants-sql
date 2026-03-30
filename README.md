@@ -1,5 +1,5 @@
 # sydney-restaurants-sql
- # 🍜  Sydney Restaurant Investment Guide - A Data Analysis (SQL)
+ # 🍜  Sydney Restaurant Investment Analysis | SQL Case Study
 
 ## The Question
 You have $500,000 and you want to open a restaurant in Sydney.
@@ -18,7 +18,7 @@ and online presence across 20 suburbs.
 I then crossed this data with ABS SEIFA 2021 socio-economic scores 
 to understand whether suburb wealth predicts restaurant success.
 
-**Tools:** Python · SQL · SQLite · DB Browser for SQLite
+**Tools:** Python · SQL · DB Browser for SQLite
 
 ---
 
