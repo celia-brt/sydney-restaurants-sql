@@ -1,12 +1,11 @@
 -- ================================================
--- SYDNEY RESTAURANT SCENE ANALYSIS
--- Exploring quality, density and socio-economic patterns
--- across 20 Sydney suburbs (388 restaurants, March 2026)
+-- SYDNEY RESTAURANT INVESTMENT ANALYSIS
+-- Where should you open a restaurant in Sydney?
+-- 388 restaurants across 20 suburbs (March 2026)
 -- Data sources: Google Maps API + ABS SEIFA 2021
 -- ================================================
 
--- QUESTION 1: Which suburb has the best average rating?
--- Business insight: identifies the areas where restaurant quality is highest
+-- QUESTION 1: Which suburb has the highest average restaurant quality?
 
 SELECT 
     suburb, 
@@ -16,12 +15,17 @@ FROM restaurants_sydney_enriched
 GROUP BY suburb
 ORDER BY avg_rating DESC;
 
--- INSIGHT: Newtown (4.63) and Surry Hills (4.62) lead on quality
--- Coogee (4.31) is a clear outlier — lower quality despite being a 
--- desirable beach suburb. Potential gap for a quality restaurant?
+-- INSIGHT Q1:
+-- Newtown (4.63) and Surry Hills (4.62) lead on quality,
+-- suggesting a dining culture where locals demand and reward excellence.
+-- Coogee (4.31) sits at the bottom despite being a premium beachside suburb.
+-- INVESTMENT ANGLE: Coogee's low avg rating signals a quality gap,
+-- the market exists (high foot traffic, affluent residents, SEIFA 1175)
+-- but is underserved by quality dining. A well-executed restaurant 
+-- could capture significant market share with less direct quality competition.
 
--- QUESTION 2a: Where are the most reviewed restaurants? 
--- (proxy for popularity/foot traffic)
+-- QUESTION 2a: Where is the highest foot traffic?
+-- (review count as proxy for customer volume)
 
 SELECT 
     name,
@@ -37,18 +41,18 @@ FROM restaurants_sydney_enriched
 WHERE review_count != ''
 ORDER BY CAST(review_count AS INTEGER) DESC
 LIMIT 20;
--- INSIGHT Q2: High review count ≠ high quality
--- Coogee Pavilion leads in volume (8,043 reviews) but scores only 4.1
--- likely driven by tourist traffic and events rather than food quality.
--- The real sweet spot: restaurants with both high reviews AND high ratings
--- Elements Smokehouse (7,245 reviews, 4.7) and Primi Italian (3,936, 4.7)
--- represent the best combination of visibility and quality.
--- CBD dominates in volume (4 restaurants in top 20) but not in quality.
 
--- QUESTION 2b: Which restaurants combine high popularity AND high quality?
--- Business angle: these are the benchmark competitors —
--- if you open a restaurant in their suburb, these are who you compete against.
--- They also validate which suburbs have a proven market for quality dining.
+-- INSIGHT Q2a:
+-- Coogee Pavilion (8,043 reviews), Grounds of The City (6,141) and
+-- Elements Smokehouse (7,245) dominate volume.
+-- CBD accounts for 4 of the top 20, driven by office workers and tourists.
+-- INVESTMENT ANGLE: High review count = proven customer demand.
+-- These venues validate their suburbs as active dining markets.
+-- The question for investors is not "is there a market?" but 
+-- "is the market well-served?" — which Q1 answers.
+
+-- QUESTION 2b: Which restaurants lead on both quality AND popularity?
+-- These are your benchmark competitors by suburb.
 
 SELECT 
     name,
@@ -62,7 +66,7 @@ SELECT
         WHEN CAST(review_count AS INTEGER) >= 500  
          AND CAST(rating AS REAL) >= 4.5 THEN 'Strong'
         WHEN CAST(review_count AS INTEGER) >= 1000 
-         AND CAST(rating AS REAL) < 4.5  THEN 'Popular but average'
+         AND CAST(rating AS REAL) < 4.5  THEN 'High volume, quality gap'
         ELSE 'Regular'
     END AS restaurant_tier
 FROM restaurants_sydney_enriched
@@ -71,42 +75,36 @@ ORDER BY
     CASE restaurant_tier
         WHEN 'Star' THEN 1
         WHEN 'Strong' THEN 2
-        WHEN 'Popular but average' THEN 3
+        WHEN 'High volume, quality gap' THEN 3
         ELSE 4
     END,
     rating DESC;
 
--- RESULTS Q2b: Restaurant tiers based on popularity + quality
+-- RESULTS Q2b:
 -- Star (1000+ reviews, 4.5+ rating): 54 restaurants
 -- Strong (500+ reviews, 4.5+ rating): 57 restaurants  
--- Popular but average (1000+ reviews, <4.5 rating): 43 restaurants
--- Regular: remaining restaurants
+-- High volume, quality gap (1000+ reviews, <4.5 rating): 43 restaurants
 
 -- INSIGHT Q2b:
--- CBD Sydney dominates the "Star" category with 8 restaurants —
--- high foot traffic drives both volume and visibility.
--- However Surry Hills, Newtown and Potts Point punch above their weight —
--- smaller suburbs but strong representation in Star and Strong tiers,
--- suggesting a loyal local clientele rather than tourist-driven traffic.
+-- CBD leads in Star restaurants (8) — foot traffic drives both 
+-- volume and visibility, but competition is highest here.
+-- Surry Hills, Newtown and Potts Point punch above their weight —
+-- strong Star representation despite smaller populations,
+-- indicating loyal local communities that actively support quality dining.
 -- 
--- Italian cuisine appears repeatedly across all tiers and suburbs,
--- confirming it as Sydney's most competitive restaurant category.
+-- The "High volume, quality gap" tier is the most interesting for investors —
+-- Coogee Pavilion (8,043 reviews, 4.1), Grounds of The City (6,141, 4.2),
+-- Chin Chin (3,897, 4.1) — these venues prove the market exists 
+-- but leave room for a quality competitor to enter and win.
 --
--- Interesting outlier: Coogee Pavilion (8,043 reviews) and 
--- Grounds of The City (6,141 reviews) land in "Popular but average" —
--- proof that marketing and location drive volume more than quality.
---
--- KEY TAKEAWAY: 
--- If opening a restaurant, Surry Hills and Newtown offer the best balance —
--- strong quality benchmark AND proven local demand outside the CBD.
+-- INVESTMENT ANGLE:
+-- Surry Hills and Newtown = high competition, high quality benchmark.
+-- Strong market but you need to be excellent to survive.
+-- Coogee and CBD = high volume, quality gap = easier to differentiate,
+-- but higher rent and tourist dependency.
 
-
--- QUESTION 3: What price segment dominates each suburb?
--- DATA QUALITY NOTE - Price Level:
--- 52.2% of restaurants have unknown price level
--- This is a limitation of the Google Maps API —
--- many restaurants don't submit their price range.
--- Results for Q3 should be interpreted with caution.
+-- QUESTION 3: Does price level predict restaurant quality?
+-- DATA QUALITY NOTE: 52.2% unknown price levels — interpret with caution.
 
 SELECT 
     price_level,
@@ -117,17 +115,17 @@ FROM restaurants_sydney_enriched
 GROUP BY price_level
 ORDER BY avg_rating DESC;
 
--- INSIGHT Q3 — Price vs Quality:
--- Counter-intuitive finding: unknown price restaurants score highest (4.61)
--- consistent with Q4 finding that less visible restaurants are often better quality.
--- Premium restaurants ($$$) generate the most reviews (1728 avg)
--- suggesting price drives curiosity and engagement.
--- Ultra-premium ($$$$) score lowest (4.38) — possibly due to 
--- higher customer expectations not being met.
--- KEY TAKEAWAY: price level is not a reliable predictor of quality in Sydney.
+-- INSIGHT Q3:
+-- Price is NOT a reliable quality signal in Sydney.
+-- Ultra-premium ($$$$) scores lowest (4.38) - high expectations 
+-- are harder to meet, increasing the risk of negative reviews.
+-- Budget ($) scores 4.47 — strong community loyalty and lower expectations
+-- create a forgiving, repeat-customer environment.
+-- INVESTMENT ANGLE: Mid-range ($$) offers the best balance —
+-- 125 restaurants, avg 4.43, avg 1,366 reviews. 
+-- Proven market size, manageable expectations, strong visibility.
 
--- QUESTION 4: Do restaurants with a website get better ratings?
--- Hypothesis: having a website = more professional = better quality
+-- QUESTION 4: Does online presence drive quality or just visibility?
 
 SELECT 
     CASE 
@@ -146,67 +144,66 @@ ORDER BY avg_rating DESC;
 -- No website:  16 restaurants | avg rating 4.73 | avg reviews 303
 -- Has website: 362 restaurants | avg rating 4.52 | avg reviews 956
 
--- INSIGHT: Hypothesis is FALSE.
--- Restaurants without a website score higher (4.73 vs 4.52) even after
--- filtering out low-review restaurants to avoid fake review bias.
--- These 16 restaurants are likely genuine hidden gems relying on 
--- word-of-mouth rather than online presence.
--- However: restaurants WITH a website get 3x more reviews (956 vs 303)
--- suggesting online presence drives visibility, not quality.
+-- INSIGHT Q4:
+-- Restaurants without a website score higher (4.73 vs 4.52) —
+-- these are quality-first operators relying on word-of-mouth.
+-- However, restaurants WITH a website get 3x more reviews (956 vs 303),
+-- meaning online presence drives discovery and customer volume.
+-- INVESTMENT ANGLE: Quality alone won't fill seats.
+-- A new restaurant needs both — exceptional food AND digital visibility.
+-- The winning formula: hidden gem quality + active online presence.
 
-
--- RESULTS Q6: SEIFA score vs average restaurant rating
+-- QUESTION 5: Does suburb wealth predict restaurant quality?
 
 SELECT 
     s.suburb,
     s.seifa_score,
     s.region,
     ROUND(AVG(CAST(r.rating AS REAL)), 2) AS avg_rating,
-    COUNT(CASE WHEN r.price_level = '$$$' 
-               OR r.price_level = '$$$$' THEN 1 END) AS premium_restaurants
+    COUNT(CASE WHEN r.price_level IN ('$$$','$$$$') THEN 1 END) AS premium_count
 FROM sydney_suburbs s
 LEFT JOIN restaurants_sydney_enriched r ON r.suburb = s.suburb
 GROUP BY s.suburb, s.seifa_score, s.region
 ORDER BY s.seifa_score DESC;
 
--- INSIGHT Q6:
--- No clear correlation between suburb wealth and restaurant quality.
--- Wealthier suburbs (Erskineville 1185, Coogee 1175) do NOT 
--- systematically score higher than less wealthy ones.
--- Most surprisingly: Marrickville (SEIFA 1087, one of the lowest) 
--- achieves one of the highest ratings (4.61).
--- Coogee is the biggest outlier — highest wealth area but lowest rating (4.31)
--- possibly explained by tourist-driven, high-volume venues prioritising 
--- location over food quality.
---
--- KEY TAKEAWAY: In Sydney, restaurant quality is driven by 
--- chef culture and local community, not suburb wealth.
--- The best food is often found in less affluent, more diverse suburbs.
+-- INSIGHT Q5:
+-- No correlation between suburb wealth (SEIFA) and restaurant quality.
+-- Erskineville (SEIFA 1185, highest) scores only 4.47 avg rating.
+-- Marrickville (SEIFA 1087, one of lowest) achieves 4.61 — top 3.
+-- Coogee (SEIFA 1175) scores lowest overall at 4.31 despite high wealth.
+-- INVESTMENT ANGLE: Wealthy suburbs don't guarantee restaurant success.
+-- Community culture, foot traffic patterns and competitive landscape
+-- matter more than postcode prestige.
+-- Diverse, community-driven suburbs (Marrickville, Newtown) 
+-- show stronger dining culture than affluent but transient ones (Coogee).
 
 -- ================================================
--- FINAL CONCLUSIONS
+-- FINAL INVESTMENT RECOMMENDATIONS
 -- Sydney Restaurant Scene Analysis — March 2026
 -- ================================================
 
--- 1. QUALITY: Newtown and Surry Hills are Sydney's best suburbs 
---    for restaurant quality, consistently outperforming wealthier suburbs.
+-- STRATEGY 1 — QUALITY PLAY (High risk, high reward)
+-- Target suburb: Newtown or Surry Hills
+-- Why: Highest avg ratings, loyal local base, proven dining culture
+-- Risk: Most competitive — you must be excellent to survive
+-- Best fit: Chef-driven concept, strong identity, mid-range pricing ($$-$$$)
 
--- 2. POPULARITY ≠ QUALITY: High review counts don't guarantee quality.
---    Tourist-driven venues (Coogee Pavilion, Grounds of The City) 
---    prove that marketing beats food in the volume game.
+-- STRATEGY 2 — OPPORTUNITY PLAY (Lower competition, quality gap)
+-- Target suburb: Coogee or Randwick  
+-- Why: High foot traffic, affluent residents (SEIFA 1149-1175),
+--      but current restaurants underperform on quality
+-- Risk: Tourist dependency in Coogee, less dining culture than Inner West
+-- Best fit: Quality casual dining ($$), weekend-focused, beachside positioning
 
--- 3. PRICE ≠ QUALITY: Ultra-premium restaurants ($$$$) score lowest (4.38).
---    The best value is found in $ and $$ segments.
+-- STRATEGY 3 — VOLUME PLAY (Established market, high visibility)
+-- Target suburb: CBD Sydney
+-- Why: Highest review volumes, office worker lunch + tourist dinner market
+-- Risk: Highest rent, most competition, less community loyalty
+-- Best fit: Fast-casual ($-$$), lunch-focused, strong digital presence
 
--- 4. ONLINE PRESENCE: Restaurants without a website are hidden gems —
---    better rated (4.73 vs 4.52) but 3x less visible than those with one.
-
--- 5. WEALTH vs QUALITY: No correlation between suburb wealth (SEIFA) 
---    and restaurant quality. The best food is in diverse, 
---    community-driven suburbs — not the richest ones.
-
--- DATASET LIMITATIONS:
--- - Sample capped at 20 restaurants per suburb (not exhaustive)
--- - 52% unknown price levels limits price analysis
--- - Data collected March 2026 via Google Maps API
+-- DATA LIMITATIONS:
+-- Sample capped at 20 restaurants per suburb (not exhaustive)
+-- 52% unknown price levels limits price segment analysis
+-- Data collected March 2026 via Google Maps API
+-- Foot traffic and rent data not included — further research recommended
 -- ================================================
