@@ -11,94 +11,73 @@ I analysed 388 restaurants across 20 Sydney suburbs to find out.
 ---
 
 ## What I Did
-I collected real restaurant data directly from Google Maps API 
-in March 2026 — ratings, review counts, price levels, opening hours 
-and online presence across 20 suburbs.
+- Collected 388 restaurants via Google Maps Places API (Python scripting)
+- Enriched data with opening hours, price levels and online presence
+- Crossed with ABS SEIFA 2021 demographic data (suburb wealth index)
+- Analysed 5 business questions using SQL
+- Built an interactive Tableau dashboard for investment scenario planning
 
-I then crossed this data with ABS SEIFA 2021 socio-economic scores 
-to understand whether suburb wealth predicts restaurant success.
-
-**Tools:** Python · SQL · DB Browser for SQLite
+**Tools:** Python · SQL · SQLite · Tableau Public · Google Maps API · ABS Open Data
 
 ---
 
 ## What I Found
 
-### 1. Forget what you think you know about location
+### 1. Wealth doesn't predict quality
+Marrickville (SEIFA 1087, least wealthy in sample) scores higher (4.61) 
+than Coogee (SEIFA 1175, most wealthy, 4.31).
+Community dining culture matters more than postcode prestige.
 
-The conventional wisdom says: open where the money is.
-The data says otherwise.
-
-Marrickville — one of the least wealthy suburbs in our sample 
-(SEIFA 1087) — achieves a higher average rating (4.61) than 
-Coogee (SEIFA 1175, rating 4.31), one of the wealthiest.
-
-Wealth doesn't buy good food. Community does.
-
-### 2. Suggests visibility ≠ satisfaction
-
-Coogee Pavilion has 8,043 reviews — the most in our entire dataset.
-Its rating? 4.1 out of 5.
-
-The Grounds of The City: 6,141 reviews. Rating: 4.2.
-
-These venues have mastered marketing and location.
-But they haven't mastered food.
-
-Meanwhile, Elements Smokehouse in Darlinghurst has 7,245 reviews 
-AND a 4.7 rating. That's the real benchmark.
-
-> High reviews ≠ high quality. But high reviews + high quality = gold.
+### 2. High volume = market exists, not market served
+Coogee Pavilion (8,043 reviews, 4.1 rating) and Grounds of The City 
+(6,141 reviews, 4.2) prove the market exists — but leave a clear 
+quality gap for a serious competitor to exploit.
+High reviews + low rating = investment opportunity, not a warning sign.
 
 ### 3. The hidden gem paradox
-
-52% of restaurants in our dataset have no price level listed on Google.
-These "invisible" restaurants actually score highest — avg rating 4.61.
-
-Restaurants with no website score even higher (4.73 vs 4.52) 
-than those with one — but get 3x fewer reviews.
-
-The best restaurants in Sydney are often the ones 
-you've never heard of.
+Restaurants without a website score higher (4.73 vs 4.52) but get 
+3x fewer reviews. Quality alone doesn't fill seats.
+The winning formula: exceptional food + active digital presence.
 
 ### 4. Price doesn't predict quality
+Ultra-premium ($$$$) scores lowest (4.38). Budget ($) scores 4.47.
+High prices raise expectations — and expectations are harder to meet.
 
-You'd expect $$$ restaurants to outperform $ ones.
-They don't.
-
-Ultra-premium ($$$$): avg rating 4.38 — the lowest of all price segments.
-Budget ($): avg rating 4.47.
-
-High prices raise expectations. Not always the food.
+### 5. No correlation between suburb wealth and restaurant quality
+The best food is in diverse, community-driven suburbs.
+Not in the most expensive postcodes.
 
 ---
 
-## The Verdict
+## Investment Recommendations
 
-**If I were investing $500,000 in a Sydney restaurant:**
+**Strategy 1 — Quality play**
+Newtown or Surry Hills. Highest ratings, loyal locals, proven dining 
+culture. High competition — you must be excellent to survive.
 
-❌ Not Coogee, tourist trap, lowest avg rating (4.31)
-❌ Not CBD, high volume, average quality, brutal competition  
-❌ Not Bondi, strong brand, weak ratings (4.49 avg)
+**Strategy 2 — Opportunity play**
+Coogee or Randwick. Affluent residents, high foot traffic, 
+but current restaurants underperform on quality. 
+Easier to differentiate, stronger upside potential.
 
-✅ **Newtown**, highest avg rating (4.63), proven loyal customer base,
-diverse cuisine scene, lower rent than CBD
-✅ **Surry Hills**, second highest rating (4.62), strong Star restaurant 
-benchmark (NOUR, NOMAD), affluent locals who eat out regularly
+**Strategy 3 — Volume play**
+CBD Sydney. Maximum foot traffic, office workers + tourists.
+Highest rent and competition — best suited to fast-casual concepts.
 
 ---
 
 ## Dataset Limitations
-- Sample capped at 20 restaurants per suburb
-- Results may reflect visibility bias (popular venues overrepresented)
-- Missing price data (52%) reduces reliability of pricing analysis
-- Findings should be interpreted as directional insights, not definitive conclusions
+- Sample capped at 20 restaurants per suburb — not exhaustive
+- 52% unknown price levels limits price segment analysis
+- Data reflects March 2026 snapshot only
+- Foot traffic and rent data not included — further research recommended
 
 ---
 
 ## Files
-- `analysis.sql` — all SQL queries with business insights
-- `restaurants_sydney_enriched.csv` — main dataset (388 restaurants)
+- `analysis.sql` — 5 business questions with SQL queries and investment insights
+- `restaurants_sydney_enriched.csv` — original dataset (388 restaurants)
+- `sydney_restaurants_final.csv` — enriched dataset with target audience, weekend status and price score (used for Tableau dashboard)
 - `sydney_suburbs.csv` — suburb demographics (ABS SEIFA 2021)
 - `collect_sydney_restaurants.py` — data collection script
 - `enrich_restaurants.py` — data enrichment script
