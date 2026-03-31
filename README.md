@@ -35,7 +35,7 @@ Coogee (SEIFA 1175, rating 4.31), one of the wealthiest.
 
 Wealth doesn't buy good food. Community does.
 
-### 2. Tourist traffic is a trap
+### 2. Suggests visibility ≠ satisfaction
 
 Coogee Pavilion has 8,043 reviews — the most in our entire dataset.
 Its rating? 4.1 out of 5.
@@ -90,7 +90,9 @@ benchmark (NOUR, NOMAD), affluent locals who eat out regularly
 
 ## Dataset Limitations
 - Sample capped at 20 restaurants per suburb
-- 52% unknown price levels limits price analysis
+- Results may reflect visibility bias (popular venues overrepresented)
+- Missing price data (52%) reduces reliability of pricing analysis
+- Findings should be interpreted as directional insights, not definitive conclusions
 
 ---
 
