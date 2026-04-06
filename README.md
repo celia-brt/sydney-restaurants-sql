@@ -1,5 +1,8 @@
 # sydney-restaurants-sql
  # 🍜  Sydney Restaurant Investment Analysis | SQL Case Study
+ 
+## 📊 Interactive Dashboard
+🔗 [View on Tableau Public](https://public.tableau.com/app/profile/celia.breteau/viz/DashboardSydneyRestaurantInvestment/DashboardinvestmentrestaurantsSydney)
 
 ## The Question
 You have $500,000 and you want to open a restaurant in Sydney.
