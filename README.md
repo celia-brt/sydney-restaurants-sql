@@ -1,12 +1,10 @@
-# Sydney Restaurant Investment Analysis
+# Sydney Restaurant Investment Analysis (2026)
  
 ## 📊 Interactive Dashboard
 🔗 [View on Tableau Public](https://public.tableau.com/app/profile/celia.breteau/viz/DashboardSydneyRestaurantInvestment/DashboardinvestmentrestaurantsSydney)
 
 ## The Question
-You have $500,000 and you want to open a restaurant in Sydney.
-Where do you go? Bondi for the beach crowd? CBD for the foot traffic? 
-Manly for the tourists?
+Sydney's restaurant scene is one of the most competitive in Australia. If you were opening one tomorrow, where would you have the best shot at succeeding, and why?
 
 I analysed 388 restaurants across 20 Sydney suburbs to find out.
 
