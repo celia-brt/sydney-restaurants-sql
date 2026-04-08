@@ -1,5 +1,4 @@
-# sydney-restaurants-sql
- # 🍜  Sydney Restaurant Investment Analysis | SQL Case Study
+# Sydney Restaurant Investment Analysis
  
 ## 📊 Interactive Dashboard
 🔗 [View on Tableau Public](https://public.tableau.com/app/profile/celia.breteau/viz/DashboardSydneyRestaurantInvestment/DashboardinvestmentrestaurantsSydney)
